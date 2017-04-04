@@ -20,10 +20,13 @@ int open_port(int port_num) {
     }
 
     if(tcgetattr(fd, &config) < 0) {
-        printf("ERROR: Failed to acquire port config");
+        printf("ERROR: Failed to acquire port config\n");
     }
 
     //Now... configs galore!
+
+    //Theoretically speaking, I could just set these config values to 0 and skip the hassle...
+    //But I'd rather have them all laid out in case I need to change them later.
 
     //In order... convert break to null byte, no CR to NL translation, no NL to CR translation,
     //don't mark parity errors or breaks, no input parity check, don't strip high bit off,
@@ -45,21 +48,29 @@ int open_port(int port_num) {
     config.c_cc[VMIN] = 1;
     config.c_cc[VTIME] = 0;
 
+
+    //TODO: Check full list of configs to make sure everything's configured correctly
+
+    //Set the baud rate to 9600
     if(cfsetispeed(&config, B9600) < 0 || cfsetospeed(&config, B9600) < 0) {
-        printf("ERROR: Failed to set baud rate");
+        printf("ERROR: Failed to set baud rate\n");
     }
 
+    //Apply the configs to the port
     if(tcsetattr(fd, TCSAFLUSH, &config) < 0) {
-        printf("ERROR: Failed to apply configs");
+        printf("ERROR: Failed to apply configs\n");
     }
 
     fcntl(fd, F_SETFL, O_NONBLOCK);
-
     return fd;
 }
 
 void write_bits(char* bit_buf, int size, int fd) {
-    int n = write(fd, bit_buf, size);
-    if(n < 0)
-        printf("ERROR: Write to %d failed in function write_bits\n", fd);
+    if(write(fd, bit_buf, size) < size)
+        printf("ERROR: Write to %d failed to transmit all bytes\n", fd);
+}
+
+void read_bits(char* bit_buf, int size, int fd) {
+    if(read(fd, bit_buf, size) < size)
+        printf("ERRORL Read from %d failed to acquire all bytes\n", fd);
 }

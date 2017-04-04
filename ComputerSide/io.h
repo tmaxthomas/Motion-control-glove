@@ -12,6 +12,8 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <termios.h>
+#include <iostream>
+#include <fstream>
 
 int open_port(int port_num); //Returns file descriptor for the selected port
 void write_bits(char* bit_buf, int size, int fd);
