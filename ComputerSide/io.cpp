@@ -4,13 +4,10 @@
 int openPort(int port_num) {
     struct termios config;
     int fd;
-
-    //Find the correct port
-    if(port_num == 1)
-        fd = open("/dev/ttyS0", O_RDWR | O_NOCTTY | O_NDELAY);
-    else if(port_num == 2)
-        fd = open("/dev/ttyS1", O_RDWR | O_NOCTTY | O_NDELAY);
-    else {
+    std::string file_name = "/dev/ttyS";
+    file_name += std::to_string(port_num);
+    fd = open(file_name.c_str(), O_RDWR | O_NOCTTY | O_NDELAY)
+    if(fd == -1){
         perror("ERROR: Illegal port number passed to function open_port()\n");
         return -1;
     }

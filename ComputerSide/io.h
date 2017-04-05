@@ -12,8 +12,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <termios.h>
-#include <iostream>
-#include <fstream>
+#include <string>
 
 //I should have made this a class, but I was trying to write C-compliant code. Which is why it's a mess, and why you need
 //to store the file handler in an integer and pass it to everything.

@@ -7,6 +7,6 @@ void loop() {
   // put your main code here, to run repeatedly:
   unsigned long a = millis();
   if(a % 500 == 0){
-    Serial.write(a);
+    Serial.println(a);
   }
 }
