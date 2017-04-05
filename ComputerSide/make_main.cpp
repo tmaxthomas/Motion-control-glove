@@ -7,7 +7,7 @@
 int main(int argc, char* argv[]) {
     struct termios attribs, config;
     int fd;
-    fd = open_port(0);
+    fd = openPort(0);
 
     //TODO: Do some read/write stuff with the board
 

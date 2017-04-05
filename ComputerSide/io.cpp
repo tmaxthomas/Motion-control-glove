@@ -1,7 +1,7 @@
 #include "io.h"
 
 //NOTE: The files here aren't accessible to normal users, which means you'll probably have to sudo this program to make it run
-int open_port(int port_num) {
+int openPort(int port_num) {
     struct termios config;
     int fd;
 
@@ -65,12 +65,14 @@ int open_port(int port_num) {
     return fd;
 }
 
-void write_bits(char* bit_buf, int size, int fd) {
+//Takes a char buffer containing the info to be written, the size of the buffer, and the file i.d. as gotten from openPort
+void writeBits(char* bit_buf, int size, int fd) {
     if(write(fd, bit_buf, size) < size)
         printf("ERROR: Write to %d failed to transmit all bytes\n", fd);
 }
 
-void read_bits(char* bit_buf, int size, int fd) {
+//Takes a char buffer where the data read will be stored, the size of the buffer, and the file i.d. as gotten from openPort
+void readBits(char* bit_buf, int size, int fd) {
     if(read(fd, bit_buf, size) < size)
         printf("ERRORL Read from %d failed to acquire all bytes\n", fd);
 }
