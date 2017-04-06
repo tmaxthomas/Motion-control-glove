@@ -6,7 +6,7 @@ int openPort(int port_num) {
     int fd;
     std::string file_name = "/dev/ttyS";
     file_name += std::to_string(port_num);
-    fd = open(file_name.c_str(), O_RDWR | O_NOCTTY | O_NDELAY)
+    fd = open(file_name.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
     if(fd == -1){
         perror("ERROR: Illegal port number passed to function open_port()\n");
         return -1;
