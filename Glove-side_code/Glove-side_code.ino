@@ -5,9 +5,10 @@
 
 //Declare sensors as globals 
 //Don't worry-the numbers aren't random. There's a bad reason for each of them.
-Adafruit_LSM303_Accel_Unified index_accel;
-Adafruit_LSM303_Mag_Unified mag_meter;
-Adafruit_MMA8451 thumb_accel, middle_accel;
+Adafruit_LSM303_Accel_Unified index_accel(8451);
+Adafruit_LSM303_Mag_Unified mag_meter(1493);
+Adafruit_MMA8451 thumb_accel(1076);
+Adafruit_MMA8451 middle_accel(2791);
 
 void setup() 
 {
@@ -17,10 +18,6 @@ void setup()
   Serial.println("Serial test");
 
   //Initialize & do error-checking
-  index_accel = new Adafruit_LSM303_Accel_Unified(42);
-  mag_meter = new Adafruit_LSM303+Mag_Unified(8);
-  thumb_accel = new Adafruit_MMA8451(26);
-  middle_accel = new Adafruit_MMA8451(101);
   
   if(!index_accel.begin()){
     //For testing, delete once everything works
