@@ -3,13 +3,16 @@
 //
 
 #include "io.h"
+#include "Vector3d.h"
+#include <list>
 
 int main(int argc, char* argv[]) {
     struct termios attribs, config;
     int fd;
+    std::list<Vector3d> thumb_accel, index_accel, middle_accel, magnet;
     fd = openPort(0);
+    //Reading thumb acceleration
 
-    //TODO: Do some read/write stuff with the board
 
     return 0;
 }

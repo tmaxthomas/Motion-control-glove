@@ -1,4 +1,3 @@
-#include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_LSM303_U.h>
 #include <Adafruit_MMA8451.h>
@@ -15,6 +14,8 @@ void setup()
   //Set up I2C/Serial
   Wire.begin();
   Serial.begin(9600);
+
+  Serial.println("Serial test");
 
   //Initialize & do error-checking
   
