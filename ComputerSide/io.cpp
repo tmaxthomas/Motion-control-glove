@@ -1,19 +1,13 @@
 #include "io.h"
 
 //NOTE: The files here aren't accessible to normal users, which means you'll probably have to sudo this program to make it run
-int openPort(int port_num) {
+int openPort(char* port) {
     struct termios config;
     int fd;
-    std::string file_name = "/dev/ttyS";
-    file_name += std::to_string(port_num);
-    fd = open(file_name.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
+    fd = open(port, O_RDWR | O_NOCTTY | O_NDELAY);
     if(fd == -1){
-        perror("ERROR: Illegal port number passed to function open_port()\n");
+        printf("ERROR: Unable to open port\n");
         return -1;
-    }
-    //Make sure the port exists
-    if(fd == -1) {
-        printf("ERROR: Unable to open port at /dev/ttyS%d\n", port_num - 1);
     }
 
     if(tcgetattr(fd, &config) < 0) {
