@@ -25,8 +25,12 @@ int main(int argc, char* argv[]) {
     std::list<Vector3d> thumb_accel, index_accel, middle_accel, magnet;
     //List of macros in file
     std::map<std::string, Macro> macros;
-
-    fd = openPort(0);
+	
+	/*fd = openPort(0);
+	if(fd == -1) {
+		return 1;
+	}
+	*/
     std::ifstream istr(argv[1]);
 
     if(!istr) {                      //If there isn't a macro file already,
@@ -51,8 +55,12 @@ int main(int argc, char* argv[]) {
                 if(control == '/' || control == '#')
                     break;
             }
-            Macro temp(name, thumb_accel, index_accel, middle_accel, magnet, thumb_accel.size());
+            Macro temp(thumb_accel, index_accel, middle_accel, magnet);
             macros[name] = temp;
+			thumb_accel.erase(thumb_accel.begin(), thumb_accel.end());
+            index_accel.erase(index_accel.begin(), index_accel.end());
+            middle_accel.erase(middle_accel.begin(), middle_accel.end());
+            magnet.erase(magnet.begin(), magnet.end());
             if(control == '#')
                 break;
         }
@@ -83,16 +91,16 @@ int main(int argc, char* argv[]) {
     //Yeah, the way I disassemble this map is messy. Whatever.
     while(macros.size() > 0) {
         ostr << macros.begin()->first << " ";
-        auto i_itr = macros.begin()->second.index_accel.begin();
-        auto m_itr = macros.begin()->second.middle_accel.begin();
-        auto mg_itr = macros.begin()->second.mag_meter.begin();
-        for(auto t_itr = macros.begin()->second.thumb_accel.begin(); t_itr != macros.begin()->second.thumb_accel.end(); t_itr++) {
+        std::list<Vector3d>::iterator i_itr = macros.begin()->second.index_accel.begin();
+        std::list<Vector3d>::iterator m_itr = macros.begin()->second.middle_accel.begin();
+        std::list<Vector3d>::iterator mg_itr = macros.begin()->second.mag_meter.begin();
+        for(std::list<Vector3d>::iterator t_itr = macros.begin()->second.thumb_accel.begin(); t_itr != macros.begin()->second.thumb_accel.end(); t_itr++) {
             writeVector(ostr, *t_itr);
             writeVector(ostr, *i_itr);
             writeVector(ostr, *m_itr);
             writeVector(ostr, *mg_itr);
             i_itr++; m_itr++; mg_itr++;
-            if(i_itr == macros.begin()->second.index_accel.end())
+            if(i_itr != macros.begin()->second.index_accel.end())
                 ostr << ", ";
         }
         macros.erase(macros.begin()->first);
