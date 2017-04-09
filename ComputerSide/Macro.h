@@ -16,10 +16,10 @@
 //distinct from the user-provided length value, which is the duration of the macro in seconds.
 class Macro {
 public:
-    Macro(std::string name_, std::list<Vector3d> thumb_accel_, std::list<Vector3d> index_accel_, std::list<Vector3d> middle_accel_, std::list<Vector3d> mag_meter_, double length_);
+    Macro(std::list<Vector3d> thumb_accel_, std::list<Vector3d> index_accel_, std::list<Vector3d> middle_accel_, std::list<Vector3d> mag_meter_, double length_);
+    Macro(const Macro& old); //Copy constructor
     std::list<Vector3d> thumb_accel, index_accel, middle_accel, mag_meter;
-    double length;
-    std::string name;
+    int getLength() { return thumb_accel.size(); } //Simple get_length
 };
 
 
