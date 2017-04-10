@@ -8,10 +8,14 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <stdint.h>
 #include <map>
+
+#define byte uint8_t
 
 void readVector(std::istream& istr, Vector3d& vec);
 void writeVector(std::ostream& ostr, Vector3d& vec);
+float readFloat(int fd);
 
 int main(int argc, char* argv[]) {
     if(argc != 3) {
@@ -26,11 +30,11 @@ int main(int argc, char* argv[]) {
     //List of macros in file
     std::map<std::string, Macro> macros;
 	
-	/*fd = openPort(0);
+	fd = openPort(0);
 	if(fd == -1) {
 		return 1;
 	}
-	*/
+
     std::ifstream istr(argv[1]);
 
     if(!istr) {                      //If there isn't a macro file already,
@@ -71,7 +75,15 @@ int main(int argc, char* argv[]) {
         if(command == "exit")
             break;
         else if(command == "create") {
-            //TODO: Implement macro creation
+            bool start = false, end = false;
+            while(!start) {
+                Vector3d t_ac(readFloat(fd), readFloat(fd), readFloat(fd));
+                Vector3d i_ac(readFloat(fd), readFloat(fd), readFloat(fd));
+                Vector3d m_ac(readFloat(fd), readFloat(fd), readFloat(fd));
+                Vector3d mg(readFloat(fd), readFloat(fd), readFloat(fd));
+
+            }
+
         } else if(command == "rename") {
             std::string old_name, new_name;
             std::cin >> old_name >> new_name;
@@ -123,4 +135,11 @@ void readVector(std::istream& istr, Vector3d& vec) {
 
 void writeVector(std::ostream& ostr, Vector3d& vec) {
     ostr << vec.x << " " << vec.y << " " << vec.z << " ";
+}
+
+//Woo, bitwise magic
+float readFloat(int fd) {
+    float* buf;
+    while(!read(fd, buf, 4));
+    return *buf;
 }

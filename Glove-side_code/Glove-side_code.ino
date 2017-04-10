@@ -1,15 +1,17 @@
+/*
 #include <Adafruit_Sensor.h>
 #include <Adafruit_LSM303_U.h>
 #include <Adafruit_MMA8451.h>
 #include <Serial_addons.h>
-
+*/
+/*
 //Declare sensors as globals 
 //Don't worry-the numbers aren't random. There's a bad reason for each of them.
 Adafruit_LSM303_Accel_Unified index_accel(8451);
 Adafruit_LSM303_Mag_Unified mag_meter(1493);
 Adafruit_MMA8451 thumb_accel(1076);
 Adafruit_MMA8451 middle_accel(2791);
-
+*/
 void setup() 
 {
   //Set up I2C/Serial
@@ -18,7 +20,8 @@ void setup()
   Serial.println("Serial test");
 
   //Initialize & do error-checking
-  
+
+  /*
   if(!index_accel.begin()){
     //For testing, delete once everything works
     Serial.println("ERROR: LMS303 accelerometer not detected. Check wiring.");
@@ -38,10 +41,12 @@ void setup()
     //For testing, delete once everything works
     Serial.println("ERROR: Thumb MMA8451 accelerometer not detected. Check wiring.");
   }
+  */
 }
 
 void loop() 
 {
+  /*
   //Used for grabbing sensor values
   sensors_event_t event;
   thumb_accel.getEvent(&event);
@@ -84,49 +89,8 @@ void loop()
   Serial.print("   Z:");
   Serial.println(event.magnetic.z);
   
-  
-  
-  //DEPRECATED
-  /*
-  Wire.beginTransmission(0x19);
-  Wire.write(0x28);
-  Wire.endTransmission();
-  Wire.requestFrom(0x19, 6);
-  for(int a = 0; a < 6; a++)
-  {
-    buffer[a] = Wire.read();
-  }
-  
-  Wire.beginTransmission(0x1E);
-  Wire.write(0x03);
-  Wire.endTransmission();
-  Wire.requestFrom(0x1E, 6);
-  for(int a = 6; a < 12; a++)
-  {
-    buffer[a] = Wire.read();
-  }
-  
-  
-  //Thumb accelerometer
-  Wire.requestFrom(0x1C, 6);
-  for(int a = 12; a < 18; a++)
-  {
-    buffer[a] = Wire.read();
-  }
-
-  //Middle finger accelerometer
-  Wire.requestFrom(0x1D, 6);
-  for(int a = 18; a < 24; a++)
-  {
-    buffer[a] = Wire.read();
-  }
-  for(int a = 0; a < 24; a++)
-  {
-    Serial.println(buffer[a]);
-  }
-  */
-  
   delay(1000);
+  */
 }
 
 
