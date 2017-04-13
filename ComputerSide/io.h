@@ -5,7 +5,6 @@
 #ifndef GLOVE_PROJECT_IO_H
 #define GLOVE_PROJECT_IO_H
 
-#include <io.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -14,11 +13,9 @@
 #include <termios.h>
 #include <string>
 
-//I should have made this a class, but I was trying to write C-compliant code. Which is why it's a mess, and why you need
-//to store the file handler in an integer and pass it to everything.
+//Yeah, it seems a bit strange that I gave this lone method its own header and cpp file. However! It's needed by both rum_main and make_main,
+//which makes it more efficient to store it in a common file
 
 int openPort(char* port); //Returns file descriptor for the selected port
-void writeBits(char* bit_buf, int size, int fd);
-void readBits(char* bit_buf, int size, int fd);
 
 #endif //GLOVE_PROJECT_IO_H

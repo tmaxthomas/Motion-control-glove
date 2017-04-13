@@ -55,15 +55,3 @@ int openPort(char* port) {
     fcntl(fd, F_SETFL, O_NONBLOCK);
     return fd;
 }
-
-//Takes a char buffer containing the info to be written, the size of the buffer, and the file i.d. as gotten from openPort
-void writeBits(char* bit_buf, int size, int fd) {
-    if(write(fd, bit_buf, size) < size)
-        printf("ERROR: Write to %d failed to transmit all bytes\n", fd);
-}
-
-//Takes a char buffer where the data read will be stored, the size of the buffer, and the file i.d. as gotten from openPort
-void readBits(char* bit_buf, int size, int fd) {
-    if(read(fd, bit_buf, size) < size)
-        printf("ERRORL Read from %d failed to acquire all bytes\n", fd);
-}

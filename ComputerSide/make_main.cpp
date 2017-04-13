@@ -12,6 +12,7 @@
 #include <map>
 
 #define byte uint8_t
+#define THRESHOLD 0.5
 
 void readVector(std::istream& istr, Vector3d& vec);
 void writeVector(std::ostream& ostr, Vector3d& vec);
@@ -23,7 +24,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    struct termios attribs, config;
     int fd;
     //Temp storage for macros
     std::list<Vector3d> thumb_accel, index_accel, middle_accel, magnet;
@@ -40,11 +40,11 @@ int main(int argc, char* argv[]) {
     if(!istr) {                      //If there isn't a macro file already,
         std::ofstream ostr(argv[1]); //Make one by opening a stream
     } else { //Read in the macro file
-        std::string name;
+        std::string name, ch;
         char control;
         //Loop has an exit condition other than end of stream; don't worry
         while(istr.good()) {
-            istr >> name;
+            istr >> name >> ch;
             while(istr.good()) {
                 Vector3d temp;
                 readVector(istr, temp);
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
                 if(control == '/' || control == '#')
                     break;
             }
-            Macro temp(thumb_accel, index_accel, middle_accel, magnet);
+            Macro temp(getKey(ch), thumb_accel, index_accel, middle_accel, magnet);
             macros[name] = temp;
 			thumb_accel.erase(thumb_accel.begin(), thumb_accel.end());
             index_accel.erase(index_accel.begin(), index_accel.end());
@@ -75,13 +75,25 @@ int main(int argc, char* argv[]) {
         if(command == "exit")
             break;
         else if(command == "create") {
+            std::string name;
+            std::string ch;
             bool start = false, end = false;
             while(!start) {
                 Vector3d t_ac(readFloat(fd), readFloat(fd), readFloat(fd));
                 Vector3d i_ac(readFloat(fd), readFloat(fd), readFloat(fd));
                 Vector3d m_ac(readFloat(fd), readFloat(fd), readFloat(fd));
                 Vector3d mg(readFloat(fd), readFloat(fd), readFloat(fd));
+                if(t_ac.mag > THRESHOLD || i_ac.mag > THRESHOLD || m_ac.mag > THRESHOLD  || mg.mag > THRESHOLD)
+                    start = true;
+            }
+            while(!end) {
+                Vector3d t_ac(readFloat(fd), readFloat(fd), readFloat(fd));
+                Vector3d i_ac(readFloat(fd), readFloat(fd), readFloat(fd));
+                Vector3d m_ac(readFloat(fd), readFloat(fd), readFloat(fd));
+                Vector3d mg(readFloat(fd), readFloat(fd), readFloat(fd));
 
+                if(t_ac.mag < THRESHOLD && i_ac.mag < THRESHOLD && m_ac.mag < THRESHOLD && mg.mag < THRESHOLD)
+                    end = true;
             }
 
         } else if(command == "rename") {
@@ -137,9 +149,8 @@ void writeVector(std::ostream& ostr, Vector3d& vec) {
     ostr << vec.x << " " << vec.y << " " << vec.z << " ";
 }
 
-//Woo, bitwise magic
 float readFloat(int fd) {
-    float* buf;
-    while(!read(fd, buf, 4));
-    return *buf;
+	float buf = 0;
+    while(!read(fd, &buf, 4));
+    return buf;
 }
