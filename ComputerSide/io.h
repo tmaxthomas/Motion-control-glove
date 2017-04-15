@@ -12,10 +12,10 @@
 #include <errno.h>
 #include <termios.h>
 #include <string>
-
-//Yeah, it seems a bit strange that I gave this lone method its own header and cpp file. However! It's needed by both rum_main and make_main,
-//which makes it more efficient to store it in a common file
+#include <vector>
+#include <stdint.h>
 
 int openPort(char* port); //Returns file descriptor for the selected port
+void readBuf(int file, void* buf, int size);
 
 #endif //GLOVE_PROJECT_IO_H

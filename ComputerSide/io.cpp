@@ -43,7 +43,7 @@ int openPort(char* port) {
     //TODO: Check full list of configs to make sure everything's configured correctly
 
     //Set the baud rate to 9600
-    if(cfsetispeed(&config, B9600) < 0 || cfsetospeed(&config, B9600) < 0) {
+    if(cfsetispeed(&config, B19200) < 0 || cfsetospeed(&config, B19200) < 0) {
         printf("ERROR: Failed to set baud rate\n");
     }
 
@@ -54,4 +54,16 @@ int openPort(char* port) {
 
     fcntl(fd, F_SETFL, O_NONBLOCK);
     return fd;
+}
+
+void readBuf(int file, void* buf, int size) {
+    char in = 0;
+    bool found = false;
+    while(!found) {
+        read(file, &in, 1);
+        if(in == 1) {
+            found = true;
+        }
+    }
+    read(file, buf, size);
 }
