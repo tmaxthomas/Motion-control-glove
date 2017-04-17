@@ -1,16 +1,11 @@
+float tick = 1;
+
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(19200);
+  Serial.begin(19200, SERIAL_8N1);
+  delay(5000);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  byte ack = 1;
-  byte* buf;
-  long msg = 42;
-  void* ptr = (void*)&msg;
-  buf = (byte*)ptr;
-  Serial.write(ack);
-  Serial.write(buf, 4);
-  delay(5000);
+  Serial.write((byte*)&tick, 4);
+  tick++;
 }

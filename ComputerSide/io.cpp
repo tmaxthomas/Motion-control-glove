@@ -65,5 +65,6 @@ void readBuf(int file, void* buf, int size) {
             found = true;
         }
     }
+    usleep(500);
     read(file, buf, size);
 }
